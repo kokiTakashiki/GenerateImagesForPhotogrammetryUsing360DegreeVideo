@@ -14,6 +14,12 @@
 		9A5A2CE72972E16F0032140A /* GenerateImagesForPhotogrammetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2CE62972E16F0032140A /* GenerateImagesForPhotogrammetryTests.swift */; };
 		9A5A2CF12972E16F0032140A /* GenerateImagesForPhotogrammetryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2CF02972E16F0032140A /* GenerateImagesForPhotogrammetryUITests.swift */; };
 		9A5A2CF32972E16F0032140A /* GenerateImagesForPhotogrammetryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2CF22972E16F0032140A /* GenerateImagesForPhotogrammetryUITestsLaunchTests.swift */; };
+		9A5A2D01297301220032140A /* InputImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D00297301220032140A /* InputImageView.swift */; };
+		9A5A2D03297301510032140A /* InputImageDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D02297301510032140A /* InputImageDragAndDropView.swift */; };
+		9A5A2D06297301D50032140A /* FilePanel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D05297301D50032140A /* FilePanel+Extension.swift */; };
+		9A5A2D092973039E0032140A /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D082973039E0032140A /* AppState.swift */; };
+		9A5A2D0D29730D350032140A /* InputVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D0C29730D350032140A /* InputVideoView.swift */; };
+		9A5A2D0F29730FD30032140A /* InputVideoDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +51,12 @@
 		9A5A2CEC2972E16F0032140A /* GenerateImagesForPhotogrammetryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GenerateImagesForPhotogrammetryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A5A2CF02972E16F0032140A /* GenerateImagesForPhotogrammetryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateImagesForPhotogrammetryUITests.swift; sourceTree = "<group>"; };
 		9A5A2CF22972E16F0032140A /* GenerateImagesForPhotogrammetryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateImagesForPhotogrammetryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9A5A2D00297301220032140A /* InputImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputImageView.swift; sourceTree = "<group>"; };
+		9A5A2D02297301510032140A /* InputImageDragAndDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputImageDragAndDropView.swift; sourceTree = "<group>"; };
+		9A5A2D05297301D50032140A /* FilePanel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FilePanel+Extension.swift"; sourceTree = "<group>"; };
+		9A5A2D082973039E0032140A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		9A5A2D0C29730D350032140A /* InputVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVideoView.swift; sourceTree = "<group>"; };
+		9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVideoDragAndDropView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +109,8 @@
 			children = (
 				9A5A2CD42972E16F0032140A /* GenerateImagesForPhotogrammetryApp.swift */,
 				9A5A2CFF297300540032140A /* Views */,
+				9A5A2D07297303890032140A /* Bindings */,
+				9A5A2D04297301BD0032140A /* Helpers */,
 				9A5A2CD82972E16F0032140A /* Assets.xcassets */,
 				9A5A2CDD2972E16F0032140A /* GenerateImagesForPhotogrammetry.entitlements */,
 				9A5A2CDA2972E16F0032140A /* Preview Content */,
@@ -133,8 +147,44 @@
 			isa = PBXGroup;
 			children = (
 				9A5A2CD62972E16F0032140A /* ContentView.swift */,
+				9A5A2D0B29730D190032140A /* ImputVideo */,
+				9A5A2D0A29730D040032140A /* ImputImage */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		9A5A2D04297301BD0032140A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9A5A2D05297301D50032140A /* FilePanel+Extension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		9A5A2D07297303890032140A /* Bindings */ = {
+			isa = PBXGroup;
+			children = (
+				9A5A2D082973039E0032140A /* AppState.swift */,
+			);
+			path = Bindings;
+			sourceTree = "<group>";
+		};
+		9A5A2D0A29730D040032140A /* ImputImage */ = {
+			isa = PBXGroup;
+			children = (
+				9A5A2D00297301220032140A /* InputImageView.swift */,
+				9A5A2D02297301510032140A /* InputImageDragAndDropView.swift */,
+			);
+			path = ImputImage;
+			sourceTree = "<group>";
+		};
+		9A5A2D0B29730D190032140A /* ImputVideo */ = {
+			isa = PBXGroup;
+			children = (
+				9A5A2D0C29730D350032140A /* InputVideoView.swift */,
+				9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */,
+			);
+			path = ImputVideo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,6 +317,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A5A2D0D29730D350032140A /* InputVideoView.swift in Sources */,
+				9A5A2D06297301D50032140A /* FilePanel+Extension.swift in Sources */,
+				9A5A2D0F29730FD30032140A /* InputVideoDragAndDropView.swift in Sources */,
+				9A5A2D01297301220032140A /* InputImageView.swift in Sources */,
+				9A5A2D03297301510032140A /* InputImageDragAndDropView.swift in Sources */,
+				9A5A2D092973039E0032140A /* AppState.swift in Sources */,
 				9A5A2CD72972E16F0032140A /* ContentView.swift in Sources */,
 				9A5A2CD52972E16F0032140A /* GenerateImagesForPhotogrammetryApp.swift in Sources */,
 			);
@@ -355,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -409,7 +465,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.6;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
