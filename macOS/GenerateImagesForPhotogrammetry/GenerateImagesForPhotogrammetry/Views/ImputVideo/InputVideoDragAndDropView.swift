@@ -11,13 +11,10 @@ import AVKit
 struct InputVideoDragAndDropView: View {
     
     @Binding var videoUrl: NSURL?
-        
+    
     var body: some View {
         ZStack {
             if videoUrl != nil {
-//                Image(nsImage: filteredImage != nil ? filteredImage! : videoUrl!)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
                 VideoPlayer(player: AVPlayer(url: (videoUrl!) as URL))
                     .frame(height: 320)
             } else {
@@ -33,7 +30,7 @@ struct InputVideoDragAndDropView: View {
             
         .onDrop(of: ["public.file-url"], isTargeted: nil, perform: handleOnDrop(providers:))
     }
-        
+    
     private func handleOnDrop(providers: [NSItemProvider]) -> Bool {
         if let item = providers.first {
             item.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (urlData, error) in
