@@ -15,6 +15,6 @@ class AppState: ObservableObject {
     private init() {}
 
     @Published var image: NSImage?
-    @Published var videoUrl: NSURL?
+    @Published var videoUrl: URL?
 }
 

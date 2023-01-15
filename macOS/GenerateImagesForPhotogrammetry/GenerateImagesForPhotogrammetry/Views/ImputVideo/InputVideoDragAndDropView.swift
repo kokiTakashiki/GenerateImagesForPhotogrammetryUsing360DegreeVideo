@@ -10,12 +10,12 @@ import AVKit
 
 struct InputVideoDragAndDropView: View {
     
-    @Binding var videoUrl: NSURL?
+    @Binding var videoUrl: URL?
     
     var body: some View {
         ZStack {
             if videoUrl != nil {
-                VideoPlayer(player: AVPlayer(url: (videoUrl!) as URL))
+                VideoPlayer(player: AVPlayer(url: videoUrl!))
                     .frame(height: 320)
             } else {
                 Text("Drag and drop video file")
@@ -36,7 +36,7 @@ struct InputVideoDragAndDropView: View {
             item.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (urlData, error) in
                 DispatchQueue.main.async {
                     if let urlData = urlData as? Data {
-                        self.videoUrl = NSURL(absoluteURLWithDataRepresentation: urlData, relativeTo: nil)
+                        self.videoUrl = URL(dataRepresentation: urlData, relativeTo: nil)
                     }
                 }
             }
@@ -47,7 +47,7 @@ struct InputVideoDragAndDropView: View {
 }
 
 struct InputVideoDragAndDropView_Previews: PreviewProvider {
-    @State static var videoUrl: NSURL? = nil //NSImage()
+    @State static var videoUrl: URL? = nil //NSImage()
     static var previews: some View {
         InputVideoDragAndDropView(videoUrl: $videoUrl)
     }
