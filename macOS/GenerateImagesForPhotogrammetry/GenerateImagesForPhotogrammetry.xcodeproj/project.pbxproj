@@ -20,6 +20,7 @@
 		9A5A2D092973039E0032140A /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D082973039E0032140A /* AppState.swift */; };
 		9A5A2D0D29730D350032140A /* InputVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D0C29730D350032140A /* InputVideoView.swift */; };
 		9A5A2D0F29730FD30032140A /* InputVideoDragAndDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */; };
+		9A5A2D112973B08E0032140A /* ExtractFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D102973B08E0032140A /* ExtractFrameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		9A5A2D082973039E0032140A /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		9A5A2D0C29730D350032140A /* InputVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVideoView.swift; sourceTree = "<group>"; };
 		9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputVideoDragAndDropView.swift; sourceTree = "<group>"; };
+		9A5A2D102973B08E0032140A /* ExtractFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractFrameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 			children = (
 				9A5A2D0C29730D350032140A /* InputVideoView.swift */,
 				9A5A2D0E29730FD30032140A /* InputVideoDragAndDropView.swift */,
+				9A5A2D102973B08E0032140A /* ExtractFrameView.swift */,
 			);
 			path = ImputVideo;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				9A5A2D092973039E0032140A /* AppState.swift in Sources */,
 				9A5A2CD72972E16F0032140A /* ContentView.swift in Sources */,
 				9A5A2CD52972E16F0032140A /* GenerateImagesForPhotogrammetryApp.swift in Sources */,
+				9A5A2D112973B08E0032140A /* ExtractFrameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
