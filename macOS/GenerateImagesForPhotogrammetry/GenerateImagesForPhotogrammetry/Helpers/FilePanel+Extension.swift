@@ -8,56 +8,49 @@
 import Cocoa
 
 extension NSOpenPanel {
-    
-    static func openImage(completion: @escaping (_ result: Result<NSImage, Error>) -> ()) {
+    static func openImage() async throws -> NSImage {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
-        panel.allowedFileTypes = ["jpg", "jpeg", "png", "heic"]
+        panel.allowedContentTypes = [.jpeg, .png, .heic]//["jpg", "jpeg", "png", "heic"]
         panel.canChooseFiles = true
-        panel.begin { (result) in
-            if result == .OK,
-                let url = panel.urls.first,
-                let image = NSImage(contentsOf: url) {
-                completion(.success(image))
-            } else {
-                completion(.failure(
-                    NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get file location"])
-                ))
-            }
+        let result = await panel.begin()
+        guard
+            result == .OK,
+            let url = panel.urls.first,
+            let image = NSImage(contentsOf: url)
+        else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get file location"])
         }
+        return image
     }
 }
 
 extension NSSavePanel {
-    
-    static func saveImage(_ image: NSImage, completion: @escaping (_ result: Result<Bool, Error>) -> ()) {
+    static func saveImage(_ image: NSImage) async throws {
         let savePanel = NSSavePanel()
         savePanel.canCreateDirectories = true
         savePanel.showsTagField = false
         savePanel.nameFieldStringValue = "image.jpg"
         savePanel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.modalPanelWindow)))
-        savePanel.begin { (result) in
-            guard result == .OK,
-                let url = savePanel.url else {
-                completion(.failure(
-                    NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get file location"])
-                ))
-                return
-            }
+        let result = await savePanel.begin()
+        guard result == .OK,
+            let url = savePanel.url
+        else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get file location"])
+        }
+        
+        Task.detached {
+            guard
+                let data = image.tiffRepresentation,
+                let imageRep = NSBitmapImageRep(data: data) else { return }
             
-            DispatchQueue.global(qos: .userInitiated).async {
-                guard
-                    let data = image.tiffRepresentation,
-                    let imageRep = NSBitmapImageRep(data: data) else { return }
-                
-                do {
-                    let imageData = imageRep.representation(using: .jpeg, properties: [.compressionFactor: 1.0])
-                    try imageData?.write(to: url)
-                } catch {
-                    completion(.failure(error))
-                }
+            do {
+                let imageData = imageRep.representation(using: .jpeg, properties: [.compressionFactor: 1.0])
+                try imageData?.write(to: url)
+            } catch {
+                throw error
             }
         }
     }

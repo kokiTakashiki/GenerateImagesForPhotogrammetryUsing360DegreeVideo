@@ -16,32 +16,42 @@ struct InputImageView: View {
             HStack {
                 Text("Input image")
                     .font(.headline)
-                Button(action: selectFile) {
+                Button(action: {
+                    Task {
+                        self.image = await selectFile()
+                    }
+                }, label: {
                     Text("Select image")
-                }
+                })
             }
             InputImageDragAndDropView(image: self.$image)
             if image != nil {
-                Button(action: saveToFile) {
+                Button(action: {
+                    Task {
+                        await saveToFile()
+                    }
+                }, label: {
                     Text("Save image")
-                }
+                })
             }
         }
     }
     
-    private func selectFile() {
-        NSOpenPanel.openImage { (result) in
-            if case let .success(image) = result {
-                self.image = image
-            }
+    private func selectFile() async -> NSImage? {
+        do {
+            return try await NSOpenPanel.openImage()
+        } catch {
+            return nil
         }
     }
     
-    private func saveToFile() {
+    private func saveToFile() async {
         guard let image = image else {
             return
         }
-        NSSavePanel.saveImage(image, completion: { _ in  })
+        do {
+            try await NSSavePanel.saveImage(image)
+        } catch {}
     }
 }
 
