@@ -15,7 +15,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Picker("Segmented Picker", selection: $selection) {
+            Picker("", selection: $selection) {
                 pickerContent()
             }
             .pickerStyle(.segmented)
