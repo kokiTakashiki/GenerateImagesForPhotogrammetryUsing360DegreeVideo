@@ -10,7 +10,7 @@ import AVKit
 
 struct InputVideoView: View {
     
-    @Binding var videoUrl: NSURL?
+    @Binding var videoUrl: URL?
     
     var body: some View {
         InputVideoDragAndDropView(videoUrl: $videoUrl)
@@ -18,7 +18,7 @@ struct InputVideoView: View {
 }
 
 struct InputVideoView_Previews: PreviewProvider {
-    @State static var videoUrl: NSURL? = nil
+    @State static var videoUrl: URL? = nil
     static var previews: some View {
         InputVideoView(videoUrl: $videoUrl)
     }
