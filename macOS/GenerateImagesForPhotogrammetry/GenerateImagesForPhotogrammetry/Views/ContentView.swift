@@ -23,8 +23,9 @@ struct ContentView: View {
             .padding(.leading, 16)
             switch selection {
             case "video":
-                Text("video")
                 InputVideoView(videoUrl: self.$appState.videoUrl)
+                Divider()
+                ExtractFrameView(videoUrl: self.$appState.videoUrl)
             case "image":
                 InputImageView(image: self.$appState.image)
                 Divider()
@@ -41,7 +42,7 @@ struct ContentView: View {
         }
         .padding(.top, 32)
         .padding(.bottom, 16)
-        .frame(minWidth: 768, idealWidth: 768, maxWidth: 1024, minHeight: 648, maxHeight: 648)
+        .frame(minWidth: 768, idealWidth: 768, maxWidth: 1024, minHeight: 724, maxHeight: 724)
     }
 
     @ViewBuilder

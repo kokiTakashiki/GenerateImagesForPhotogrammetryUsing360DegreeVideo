@@ -9,8 +9,39 @@ import SwiftUI
 import AVKit
 
 struct ExtractFrameView: View {
+
+    @Binding var videoUrl: URL?
+    @State var resultImage: NSImage?
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Button(action: {
+                Task.detached {
+                    if videoUrl != nil {
+                        let image = imageFromVideo(url: videoUrl!, at: 0)
+                        Task { @MainActor in
+                            self.resultImage = image
+                        }
+                    }
+                }
+            }, label: {
+                Text("Start Extract")
+            })
+            ZStack {
+                if resultImage != nil {
+                    Image(nsImage: resultImage!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else {
+                    Text("no result")
+                }
+            }
+            .frame(width: 160, height: 160)
+            .background(Color.black.opacity(0.5))
+            .cornerRadius(8)
+            .padding(.trailing, 16.0)
+            .padding(.leading, 16.0)
+        }
     }
 }
 
@@ -18,6 +49,9 @@ extension ExtractFrameView {
     private func imageFromVideo(url: URL, at time: TimeInterval) -> NSImage? {
         let asset = AVURLAsset(url: url)
 
+        var metadataString = ""
+        dump(asset.commonMetadata, to: &metadataString)
+        print("\(metadataString)")
         let assetIG = AVAssetImageGenerator(asset: asset)
         assetIG.appliesPreferredTrackTransform = true
         assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
@@ -36,7 +70,8 @@ extension ExtractFrameView {
 }
 
 struct ExtractFrameView_Previews: PreviewProvider {
+    @State static var videoUrl: URL? = nil
     static var previews: some View {
-        ExtractFrameView()
+        ExtractFrameView(videoUrl: $videoUrl)
     }
 }
