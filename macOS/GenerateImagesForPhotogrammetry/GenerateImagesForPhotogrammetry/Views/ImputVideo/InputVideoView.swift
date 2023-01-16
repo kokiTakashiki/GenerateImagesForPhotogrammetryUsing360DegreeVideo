@@ -13,7 +13,30 @@ struct InputVideoView: View {
     @Binding var videoUrl: URL?
     
     var body: some View {
-        InputVideoDragAndDropView(videoUrl: $videoUrl)
+        VStack(spacing: 16) {
+            HStack {
+                Text("Input video")
+                    .font(.headline)
+                Button(action: {
+                    Task {
+                        self.videoUrl = await selectFile()
+                    }
+                }, label: {
+                    Text("Select video")
+                })
+            }
+            InputVideoDragAndDropView(videoUrl: $videoUrl)
+        }
+    }
+}
+
+extension InputVideoView {
+    private func selectFile() async -> URL? {
+        do {
+            return try await NSOpenPanel.openVideo()
+        } catch {
+            return nil
+        }
     }
 }
 
