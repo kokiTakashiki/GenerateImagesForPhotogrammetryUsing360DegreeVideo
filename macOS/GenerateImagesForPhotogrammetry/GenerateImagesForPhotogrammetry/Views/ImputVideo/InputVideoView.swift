@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import AVKit
 
 struct InputVideoView: View {
     
+    @EnvironmentObject var appState: AppState
     @Binding var videoUrl: URL?
     
     var body: some View {
@@ -26,6 +26,7 @@ struct InputVideoView: View {
                 })
             }
             InputVideoDragAndDropView(videoUrl: $videoUrl)
+                .environmentObject(appState)
         }
     }
 }

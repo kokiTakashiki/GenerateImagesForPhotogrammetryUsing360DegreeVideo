@@ -11,7 +11,7 @@ struct ContentView: View {
     
     @StateObject var appState = AppState.shared
     let pickerValues = ["video", "image"]
-    @State private var selection = "image"
+    @State private var selection = "video"
 
     var body: some View {
         VStack(spacing: 16) {
@@ -24,8 +24,12 @@ struct ContentView: View {
             switch selection {
             case "video":
                 InputVideoView(videoUrl: self.$appState.videoUrl)
+                    .environmentObject(appState)
                 Divider()
-                ExtractFrameView(videoUrl: self.$appState.videoUrl)
+                if self.appState.playerItem != nil {
+                    ExtractFrameView(playerItemObserver: PlayerItemObserver(playerItem: self.appState.playerItem!))
+                        .environmentObject(appState)
+                }
             case "image":
                 InputImageView(image: self.$appState.image)
                 Divider()

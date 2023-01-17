@@ -10,37 +10,71 @@ import AVKit
 
 struct ExtractFrameView: View {
 
-    @Binding var videoUrl: URL?
-    @State var resultImage: NSImage?
+    @EnvironmentObject var appState: AppState
+    let playerItemObserver: PlayerItemObserver
+    @State private var isExtractFrameButton = false
+    @State private var resultImages: [NSImage?] = []
+    @State private var input = ""
 
     var body: some View {
         VStack {
-            Button(action: {
-                Task.detached {
-                    if videoUrl != nil {
-                        let image = imageFromVideo(url: videoUrl!, at: 0)
-                        Task { @MainActor in
-                            self.resultImage = image
+            if isExtractFrameButton {
+                HStack {
+                    TextField("フレーム数 (default 1frames per second.)", text: $input)
+                        .frame(width: 300)
+                    Button(action: {
+                        Task.detached {
+                            let images = await imagesFromVideo(frameNumber: CMTimeScale(Int(input) ?? 1))
+                            Task { @MainActor in
+                                self.resultImages = images
+                            }
                         }
-                    }
-                }
-            }, label: {
-                Text("Start Extract")
-            })
-            ZStack {
-                if resultImage != nil {
-                    Image(nsImage: resultImage!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else {
-                    Text("no result")
+                    }, label: {
+                        Text("Start Extract")
+                    })
                 }
             }
-            .frame(width: 160, height: 160)
-            .background(Color.black.opacity(0.5))
-            .cornerRadius(8)
+            ZStack {
+                if !resultImages.isEmpty {
+                    ScrollView(.horizontal) {
+                        LazyHStack {
+                            ForEach(resultImages, id: \.self) { image in
+                                if image != nil {
+                                    Image(nsImage: image!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 160, height: 160)
+                                        .background(Color.black.opacity(0.5))
+                                        .cornerRadius(8)
+                                } else {
+                                    Text("no result")
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Text("no result")
+                        .frame(width: 160, height: 160)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(8)
+                }
+            }
             .padding(.trailing, 16.0)
             .padding(.leading, 16.0)
+        }
+        .onReceive(playerItemObserver.$currentStatus) { newStatus in
+            switch newStatus {
+            case .unknown:
+                isExtractFrameButton = false
+            case .failed:
+                isExtractFrameButton = false
+            case .readyToPlay:
+                isExtractFrameButton = true
+            case .none:
+                isExtractFrameButton = false
+            case .some(_):
+                isExtractFrameButton = false
+            }
         }
     }
 }
@@ -49,9 +83,6 @@ extension ExtractFrameView {
     private func imageFromVideo(url: URL, at time: TimeInterval) -> NSImage? {
         let asset = AVURLAsset(url: url)
 
-        var metadataString = ""
-        dump(asset.commonMetadata, to: &metadataString)
-        print("\(metadataString)")
         let assetIG = AVAssetImageGenerator(asset: asset)
         assetIG.appliesPreferredTrackTransform = true
         assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
@@ -67,11 +98,35 @@ extension ExtractFrameView {
 
         return NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
     }
-}
 
-struct ExtractFrameView_Previews: PreviewProvider {
-    @State static var videoUrl: URL? = nil
-    static var previews: some View {
-        ExtractFrameView(videoUrl: $videoUrl)
+    private func imagesFromVideo(frameNumber: CMTimeScale) -> [NSImage?] {
+        var result: [NSImage?] = []
+        guard let playerItem = appState.playerItem else {
+            return []
+        }
+
+        // 総再生時間(秒) x １秒間のフレーム数
+        let durationFrame = CMTimeGetSeconds(playerItem.duration) * Double(frameNumber)
+        let imagesCount: Int = Int(durationFrame)
+
+        let asset = playerItem.asset
+        let assetIG = AVAssetImageGenerator(asset: asset)
+        assetIG.appliesPreferredTrackTransform = true
+        assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+
+        for i in 0 ..< imagesCount {
+            let cmTime = CMTime(seconds: Double(i), preferredTimescale: frameNumber)
+            do {
+                let thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+                result.append(
+                    NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
+                )
+            } catch let error {
+                print("Error: \(error)")
+                result.append(nil)
+            }
+        }
+
+        return result
     }
 }
