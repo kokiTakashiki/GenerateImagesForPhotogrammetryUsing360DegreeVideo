@@ -10,12 +10,13 @@ import AVKit
 
 struct InputVideoDragAndDropView: View {
     
+    @EnvironmentObject var appState: AppState
     @Binding var videoUrl: URL?
     
     var body: some View {
         ZStack {
             if videoUrl != nil {
-                VideoPlayer(player: AVPlayer(url: videoUrl!))
+                VideoPlayer(player: appState.player)
                     .frame(height: 320)
             } else {
                 Text("Drag and drop video file")
