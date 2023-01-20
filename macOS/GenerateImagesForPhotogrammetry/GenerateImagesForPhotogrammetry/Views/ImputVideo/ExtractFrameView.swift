@@ -41,21 +41,24 @@ struct ExtractFrameView: View {
                         .background(Color.black.opacity(0.5))
                         .cornerRadius(8)
                 } else {
-                    ScrollView(.horizontal) {
-                        LazyHStack {
-                            ForEach(resultImages, id: \.self) { image in
-                                if image != nil {
-                                    Image(nsImage: image!)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 160, height: 160)
-                                        .background(Color.black.opacity(0.5))
-                                        .cornerRadius(8)
-                                } else {
-                                    Text("no result")
+                    VStack {
+                        ScrollView(.horizontal) {
+                            LazyHStack {
+                                ForEach(resultImages, id: \.self) { image in
+                                    if image != nil {
+                                        Image(nsImage: image!)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 160, height: 160)
+                                            .background(Color.black.opacity(0.5))
+                                            .cornerRadius(8)
+                                    } else {
+                                        Text("no result")
+                                    }
                                 }
                             }
                         }
+                        Text("result: \(resultImages.count) images")
                     }
                 }
             }
