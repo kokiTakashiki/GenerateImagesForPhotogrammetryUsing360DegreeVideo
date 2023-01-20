@@ -37,6 +37,59 @@ final class AppState: ObservableObject {
     }
 }
 
+// MARK: ExtractFrame
+extension AppState {
+    func imageFromVideo(url: URL, at time: TimeInterval) -> NSImage? {
+        let asset = AVURLAsset(url: url)
+
+        let assetIG = AVAssetImageGenerator(asset: asset)
+        assetIG.appliesPreferredTrackTransform = true
+        assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+
+        let cmTime = CMTime(seconds: time, preferredTimescale: 60)
+        let thumbnailImageRef: CGImage
+        do {
+            thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+        } catch let error {
+            print("Error: \(error)")
+            return nil
+        }
+
+        return NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
+    }
+
+    func imagesFromVideo(frameNumber: CMTimeScale) -> [NSImage?] {
+        var result: [NSImage?] = []
+        guard let playerItem = appState.playerItem else {
+            return []
+        }
+
+        // 総再生時間(秒) x １秒間のフレーム数
+        let durationFrame = CMTimeGetSeconds(playerItem.duration) * Double(frameNumber)
+        let imagesCount: Int = Int(durationFrame)
+
+        let asset = playerItem.asset
+        let assetIG = AVAssetImageGenerator(asset: asset)
+        assetIG.appliesPreferredTrackTransform = true
+        assetIG.apertureMode = AVAssetImageGenerator.ApertureMode.encodedPixels
+
+        for i in 0 ..< imagesCount {
+            let cmTime = CMTime(seconds: Double(i), preferredTimescale: frameNumber)
+            do {
+                let thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+                result.append(
+                    NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
+                )
+            } catch let error {
+                print("Error: \(error)")
+                result.append(nil)
+            }
+        }
+
+        return result
+    }
+}
+
 final class PlayerItemObserver {
     
     @Published var currentStatus: AVPlayerItem.Status?
