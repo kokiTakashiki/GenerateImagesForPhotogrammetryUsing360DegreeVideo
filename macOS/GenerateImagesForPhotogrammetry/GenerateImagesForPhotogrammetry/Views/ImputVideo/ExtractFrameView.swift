@@ -35,28 +35,31 @@ struct ExtractFrameView: View {
                 }
             }
             ZStack {
-                if !resultImages.isEmpty {
-                    ScrollView(.horizontal) {
-                        LazyHStack {
-                            ForEach(resultImages, id: \.self) { image in
-                                if image != nil {
-                                    Image(nsImage: image!)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 160, height: 160)
-                                        .background(Color.black.opacity(0.5))
-                                        .cornerRadius(8)
-                                } else {
-                                    Text("no result")
-                                }
-                            }
-                        }
-                    }
-                } else {
+                if resultImages.isEmpty {
                     Text("no result")
                         .frame(width: 160, height: 160)
                         .background(Color.black.opacity(0.5))
                         .cornerRadius(8)
+                } else {
+                    VStack {
+                        ScrollView(.horizontal) {
+                            LazyHStack {
+                                ForEach(resultImages, id: \.self) { image in
+                                    if image != nil {
+                                        Image(nsImage: image!)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 160, height: 160)
+                                            .background(Color.black.opacity(0.5))
+                                            .cornerRadius(8)
+                                    } else {
+                                        Text("no result")
+                                    }
+                                }
+                            }
+                        }
+                        Text("result: \(resultImages.count) images")
+                    }
                 }
             }
             .padding(.trailing, 16.0)
