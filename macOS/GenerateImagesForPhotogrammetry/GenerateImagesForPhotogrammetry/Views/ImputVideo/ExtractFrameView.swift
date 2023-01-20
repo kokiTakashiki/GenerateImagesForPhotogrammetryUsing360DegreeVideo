@@ -35,7 +35,12 @@ struct ExtractFrameView: View {
                 }
             }
             ZStack {
-                if !resultImages.isEmpty {
+                if resultImages.isEmpty {
+                    Text("no result")
+                        .frame(width: 160, height: 160)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(8)
+                } else {
                     ScrollView(.horizontal) {
                         LazyHStack {
                             ForEach(resultImages, id: \.self) { image in
@@ -52,11 +57,6 @@ struct ExtractFrameView: View {
                             }
                         }
                     }
-                } else {
-                    Text("no result")
-                        .frame(width: 160, height: 160)
-                        .background(Color.black.opacity(0.5))
-                        .cornerRadius(8)
                 }
             }
             .padding(.trailing, 16.0)
