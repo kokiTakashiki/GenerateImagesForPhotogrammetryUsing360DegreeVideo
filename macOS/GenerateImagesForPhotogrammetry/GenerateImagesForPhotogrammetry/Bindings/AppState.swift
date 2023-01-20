@@ -60,7 +60,7 @@ extension AppState {
 
     func imagesFromVideo(frameNumber: CMTimeScale) -> [NSImage?] {
         var result: [NSImage?] = []
-        guard let playerItem = appState.playerItem else {
+        guard let playerItem = playerItem else {
             return []
         }
 
