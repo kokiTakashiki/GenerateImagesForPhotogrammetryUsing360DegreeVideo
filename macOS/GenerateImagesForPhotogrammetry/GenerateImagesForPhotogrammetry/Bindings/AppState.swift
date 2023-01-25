@@ -21,6 +21,8 @@ final class AppState: ObservableObject {
     @Published var player: AVPlayer = AVPlayer()
     @Published var playerItem: AVPlayerItem?
 
+    @Published var progressValue: Float = 0.0
+
     private init() {
         $videoUrl.sink { [weak self] urlNil in
             guard let url = urlNil else { return }
@@ -83,6 +85,9 @@ extension AppState {
             } catch let error {
                 print("Error: \(error)")
                 result.append(nil)
+            }
+            Task { @MainActor in
+                progressValue += 0.1
             }
         }
 

@@ -23,6 +23,7 @@ struct ExtractFrameView: View {
                     TextField("フレーム数 (default 1frames per second.)", text: $input)
                         .frame(width: 300)
                     Button(action: {
+                        appState.progressValue = 0.0
                         Task.detached {
                             let images = await appState.imagesFromVideo(frameNumber: CMTimeScale(Int(input) ?? 1))
                             Task { @MainActor in
@@ -34,7 +35,7 @@ struct ExtractFrameView: View {
                     })
                 }
             }
-            ZStack {
+            VStack {
                 if resultImages.isEmpty {
                     Text("no result")
                         .frame(width: 160, height: 160)
@@ -58,8 +59,16 @@ struct ExtractFrameView: View {
                                 }
                             }
                         }
-                        Text("result: \(resultImages.count) images")
+                        HStack {
+                            Text("result: \(resultImages.count) images")
+                            Spacer()
+                        }
                     }
+                }
+                HStack {
+                    Spacer()
+                    ProgressBar(value: $appState.progressValue)
+                        .frame(width: 300, height: 10)
                 }
             }
             .padding(.trailing, 16.0)
