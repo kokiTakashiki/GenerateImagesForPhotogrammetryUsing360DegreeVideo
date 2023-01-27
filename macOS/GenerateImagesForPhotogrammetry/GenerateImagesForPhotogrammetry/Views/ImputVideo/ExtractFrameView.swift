@@ -67,8 +67,12 @@ struct ExtractFrameView: View {
                 }
                 HStack {
                     Spacer()
-                    ProgressBar(value: $appState.progressValue)
-                        .frame(width: 300, height: 10)
+                    if appState.progressValue == 1.0 {
+                        Text("Complete")
+                    } else {
+                        ProgressBar(value: $appState.progressValue)
+                            .frame(width: 300, height: 10)
+                    }
                 }
             }
             .padding(.trailing, 16.0)

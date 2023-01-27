@@ -87,7 +87,7 @@ extension AppState {
                 result.append(nil)
             }
             Task { @MainActor in
-                progressValue += 0.1
+                progressValue = Float(i+1) / Float(imagesCount)
             }
         }
 
