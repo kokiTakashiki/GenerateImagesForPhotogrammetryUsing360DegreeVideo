@@ -23,6 +23,9 @@
 		9A5A2D112973B08E0032140A /* ExtractFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D102973B08E0032140A /* ExtractFrameView.swift */; };
 		9A5A2D132973BC3E0032140A /* NSSavePanel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D122973BC3E0032140A /* NSSavePanel+Extension.swift */; };
 		9A5A2D16297A9BC50032140A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5A2D15297A9BC50032140A /* ProgressBar.swift */; };
+		9AC1AAF129843EC100CDE822 /* ExtractFrameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC1AAF029843EC100CDE822 /* ExtractFrameState.swift */; };
+		9AC1AAF329851EB900CDE822 /* Collection+safeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC1AAF229851EB900CDE822 /* Collection+safeIndex.swift */; };
+		9AC1AAF529852ED600CDE822 /* InfiniteHorizontalList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC1AAF429852ED600CDE822 /* InfiniteHorizontalList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		9A5A2D102973B08E0032140A /* ExtractFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractFrameView.swift; sourceTree = "<group>"; };
 		9A5A2D122973BC3E0032140A /* NSSavePanel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSavePanel+Extension.swift"; sourceTree = "<group>"; };
 		9A5A2D15297A9BC50032140A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		9AC1AAF029843EC100CDE822 /* ExtractFrameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractFrameState.swift; sourceTree = "<group>"; };
+		9AC1AAF229851EB900CDE822 /* Collection+safeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+safeIndex.swift"; sourceTree = "<group>"; };
+		9AC1AAF429852ED600CDE822 /* InfiniteHorizontalList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteHorizontalList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +171,7 @@
 			children = (
 				9A5A2D05297301D50032140A /* NSOpenPanel+Extension.swift */,
 				9A5A2D122973BC3E0032140A /* NSSavePanel+Extension.swift */,
+				9AC1AAF229851EB900CDE822 /* Collection+safeIndex.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -172,6 +179,7 @@
 		9A5A2D07297303890032140A /* Bindings */ = {
 			isa = PBXGroup;
 			children = (
+				9AC1AAEF29843E9B00CDE822 /* ImputVideo */,
 				9A5A2D082973039E0032140A /* AppState.swift */,
 			);
 			path = Bindings;
@@ -200,8 +208,17 @@
 			isa = PBXGroup;
 			children = (
 				9A5A2D15297A9BC50032140A /* ProgressBar.swift */,
+				9AC1AAF429852ED600CDE822 /* InfiniteHorizontalList.swift */,
 			);
 			path = UIParts;
+			sourceTree = "<group>";
+		};
+		9AC1AAEF29843E9B00CDE822 /* ImputVideo */ = {
+			isa = PBXGroup;
+			children = (
+				9AC1AAF029843EC100CDE822 /* ExtractFrameState.swift */,
+			);
+			path = ImputVideo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,8 +358,11 @@
 				9A5A2D01297301220032140A /* InputImageView.swift in Sources */,
 				9A5A2D132973BC3E0032140A /* NSSavePanel+Extension.swift in Sources */,
 				9A5A2D03297301510032140A /* InputImageDragAndDropView.swift in Sources */,
+				9AC1AAF329851EB900CDE822 /* Collection+safeIndex.swift in Sources */,
 				9A5A2D092973039E0032140A /* AppState.swift in Sources */,
 				9A5A2CD72972E16F0032140A /* ContentView.swift in Sources */,
+				9AC1AAF129843EC100CDE822 /* ExtractFrameState.swift in Sources */,
+				9AC1AAF529852ED600CDE822 /* InfiniteHorizontalList.swift in Sources */,
 				9A5A2CD52972E16F0032140A /* GenerateImagesForPhotogrammetryApp.swift in Sources */,
 				9A5A2D112973B08E0032140A /* ExtractFrameView.swift in Sources */,
 			);
