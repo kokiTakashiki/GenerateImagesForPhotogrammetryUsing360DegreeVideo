@@ -11,9 +11,9 @@ import AVKit
 struct ExtractFrameView: View {
 
     @EnvironmentObject var appState: AppState
+    @StateObject var state = ExtractFrameState.shared
     let playerItemObserver: PlayerItemObserver
     @State private var isExtractFrameButton = false
-    @State private var resultImages: [NSImage?] = []
     @State private var input = ""
 
     var body: some View {
@@ -24,10 +24,12 @@ struct ExtractFrameView: View {
                         .frame(width: 300)
                     Button(action: {
                         appState.progressValue = 0.0
+                        state.isLoading = false
+                        state.resultImagesDisplay = []
                         Task.detached {
                             let images = await appState.imagesFromVideo(frameNumber: CMTimeScale(Int(input) ?? 1))
                             Task { @MainActor in
-                                self.resultImages = images
+                                self.state.resultImages = images
                             }
                         }
                     }, label: {
@@ -36,7 +38,7 @@ struct ExtractFrameView: View {
                 }
             }
             VStack {
-                if resultImages.isEmpty {
+                if state.resultImages.isEmpty {
                     Text("no result")
                         .frame(width: 160, height: 160)
                         .background(Color.black.opacity(0.5))
@@ -44,23 +46,10 @@ struct ExtractFrameView: View {
                 } else {
                     VStack {
                         ScrollView(.horizontal) {
-                            LazyHStack {
-                                ForEach(resultImages, id: \.self) { image in
-                                    if image != nil {
-                                        Image(nsImage: image!)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 160, height: 160)
-                                            .background(Color.black.opacity(0.5))
-                                            .cornerRadius(8)
-                                    } else {
-                                        Text("no result")
-                                    }
-                                }
-                            }
+                            resultList()
                         }
                         HStack {
-                            Text("result: \(resultImages.count) images")
+                            Text("result: \(state.resultImages.count) images")
                             Spacer()
                         }
                     }
@@ -91,6 +80,31 @@ struct ExtractFrameView: View {
             case .some(_):
                 isExtractFrameButton = false
             }
+        }
+    }
+}
+
+extension ExtractFrameView {
+    private func resultList() -> some View {
+        InfiniteHorizontalList(
+            data: $state.resultImagesDisplay,
+            isLoading: $state.isLoading,
+            loadMore: state.loadMore) { item in
+                resultListCell(item)
+            }
+    }
+
+    @ViewBuilder
+    private func resultListCell(_ image: NSImage?) -> some View {
+        if image != nil {
+            Image(nsImage: image!)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 160, height: 160)
+                .background(Color.black.opacity(0.5))
+                .cornerRadius(8)
+        } else {
+            Text("no result")
         }
     }
 }
