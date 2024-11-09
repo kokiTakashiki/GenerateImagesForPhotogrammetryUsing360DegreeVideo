@@ -20,12 +20,10 @@ extension NSSavePanel {
         else {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get file location"])
         }
-        
+        guard
+            let data = image.tiffRepresentation,
+            let imageRep = NSBitmapImageRep(data: data) else { return }
         Task.detached {
-            guard
-                let data = image.tiffRepresentation,
-                let imageRep = NSBitmapImageRep(data: data) else { return }
-            
             do {
                 let imageData = imageRep.representation(using: .jpeg, properties: [.compressionFactor: 1.0])
                 try imageData?.write(to: url)

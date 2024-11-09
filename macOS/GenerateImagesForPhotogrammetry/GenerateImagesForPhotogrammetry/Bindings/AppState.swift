@@ -7,8 +7,9 @@
 
 import Combine
 import Cocoa
-import AVKit
+@preconcurrency import AVKit
 
+@MainActor
 final class AppState: ObservableObject {
 
     static let shared = AppState()
@@ -32,7 +33,7 @@ final class AppState: ObservableObject {
     }
     
     private func open(_ url: URL) {
-        let asset = AVAsset(url: url)
+        let asset = AVURLAsset(url: url)
         let playerItem = AVPlayerItem(asset: asset)
         self.playerItem = playerItem
         player.replaceCurrentItem(with: playerItem)
@@ -41,7 +42,7 @@ final class AppState: ObservableObject {
 
 // MARK: ExtractFrame
 extension AppState {
-    func imageFromVideo(url: URL, at time: TimeInterval) -> NSImage? {
+    func imageFromVideo(url: URL, at time: TimeInterval) async -> NSImage? {
         let asset = AVURLAsset(url: url)
 
         let assetIG = AVAssetImageGenerator(asset: asset)
@@ -51,7 +52,8 @@ extension AppState {
         let cmTime = CMTime(seconds: time, preferredTimescale: 60)
         let thumbnailImageRef: CGImage
         do {
-            thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+            let (image, _) = try await assetIG.image(at: cmTime)
+            thumbnailImageRef = image
         } catch let error {
             print("Error: \(error)")
             return nil
@@ -60,7 +62,7 @@ extension AppState {
         return NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
     }
 
-    func imagesFromVideo(frameNumber: CMTimeScale) -> [NSImage?] {
+    func imagesFromVideo(frameNumber: CMTimeScale) async -> [NSImage?] {
         var result: [NSImage?] = []
         guard let playerItem = playerItem else {
             return []
@@ -78,17 +80,15 @@ extension AppState {
         for i in 0 ..< imagesCount {
             let cmTime = CMTime(seconds: Double(i), preferredTimescale: frameNumber)
             do {
-                let thumbnailImageRef = try assetIG.copyCGImage(at: cmTime, actualTime: nil)
+                let (image, _) = try await assetIG.image(at: cmTime)
                 result.append(
-                    NSImage(cgImage: thumbnailImageRef, size: NSSize(width: 300, height: 300))
+                    NSImage(cgImage: image, size: NSSize(width: 300, height: 300))
                 )
             } catch let error {
                 print("Error: \(error)")
                 result.append(nil)
             }
-            Task { @MainActor in
-                progressValue = Float(i+1) / Float(imagesCount)
-            }
+            progressValue = Float(i+1) / Float(imagesCount)
         }
 
         return result

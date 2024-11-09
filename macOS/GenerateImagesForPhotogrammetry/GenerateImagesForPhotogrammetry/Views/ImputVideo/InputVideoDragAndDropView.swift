@@ -35,8 +35,8 @@ struct InputVideoDragAndDropView: View {
     private func handleOnDrop(providers: [NSItemProvider]) -> Bool {
         if let item = providers.first {
             item.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (urlData, error) in
-                Task { @MainActor in
-                    if let urlData = urlData as? Data {
+                if let urlData = urlData as? Data {
+                    Task { @MainActor in
                         self.videoUrl = URL(dataRepresentation: urlData, relativeTo: nil)
                     }
                 }

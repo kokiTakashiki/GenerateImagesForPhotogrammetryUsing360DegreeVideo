@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 final class ExtractFrameState: ObservableObject {
     static let shared = ExtractFrameState()
     
