@@ -26,11 +26,9 @@ struct ExtractFrameView: View {
                         appState.progressValue = 0.0
                         state.isLoading = false
                         state.resultImagesDisplay = []
-                        Task.detached {
+                        Task { @MainActor in
                             let images = await appState.imagesFromVideo(frameNumber: CMTimeScale(Int(input) ?? 1))
-                            Task { @MainActor in
-                                self.state.resultImages = images
-                            }
+                            self.state.resultImages = images
                         }
                     }, label: {
                         Text("Start Extract")

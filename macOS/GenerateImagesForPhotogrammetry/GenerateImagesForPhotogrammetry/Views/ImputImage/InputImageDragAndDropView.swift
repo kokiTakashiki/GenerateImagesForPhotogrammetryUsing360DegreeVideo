@@ -32,12 +32,12 @@ struct InputImageDragAndDropView: View {
     private func handleOnDrop(providers: [NSItemProvider]) -> Bool {
         if let item = providers.first {
             item.loadItem(forTypeIdentifier: "public.file-url", options: nil) { (urlData, error) in
-                Task { @MainActor in
-                    if let urlData = urlData as? Data {
-                        let url = NSURL(absoluteURLWithDataRepresentation: urlData, relativeTo: nil) as URL
-                        guard let image = NSImage(contentsOf: url) else {
-                            return
-                        }
+                if let urlData = urlData as? Data {
+                    let url = NSURL(absoluteURLWithDataRepresentation: urlData, relativeTo: nil) as URL
+                    guard let image = NSImage(contentsOf: url) else {
+                        return
+                    }
+                    Task { @MainActor in
                         self.image = image
                     }
                 }
